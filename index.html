@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Te Amo Hacker Rosa</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      overflow: hidden;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
+      cursor: pointer;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .mensaje {
+      position: absolute;
+      color: #ff66cc; /* rosa */
+      font-size: 24px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 20px;
+      border: 2px solid #ff66cc;
+      border-radius: 10px;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: aparecer 0.3s ease-out forwards;
+    }
+
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<script>
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const letras = ["0", "1", "TE AMO"];
+  const fontSize = 16;
+  const columns = Math.floor(canvas.width / fontSize);
+  const gotas = Array(columns).fill(0);
+
+  function dibujarMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#ff66cc"; // rosa
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < gotas.length; i++) {
+      const texto = letras[Math.floor(Math.random() * letras.length)];
+      ctx.fillText(texto, i * fontSize, gotas[i] * fontSize);
+
+      if (gotas[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        gotas[i] = 0;
+      }
+
+      gotas[i]++;
+    }
+  }
+
+  setInterval(dibujarMatrix, 50);
+
+  document.addEventListener("click", (e) => {
+    const nuevoMensaje = document.createElement("div");
+    nuevoMensaje.className = "mensaje";
+    nuevoMensaje.innerText = "TE AMO ❤️";
+    nuevoMensaje.style.left = e.pageX + "px";
+    nuevoMensaje.style.top = e.pageY + "px";
+    document.body.appendChild(nuevoMensaje);
+
+    setTimeout(() => {
+      nuevoMensaje.remove();
+    }, 1000); // 1 segundo
+  });
+</script>
+
+</body>
+</html>
